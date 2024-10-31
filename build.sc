@@ -4,21 +4,21 @@ import mill._, scalalib._
 
 import $ivy.`com.lihaoyi::mill-contrib-bloop:$MILL_VERSION`
 
-import $ivy.`com.mchange::mill-daemon:0.0.1`
+import $ivy.`com.mchange::mill-daemon:0.1.1`
 
-import $ivy.`com.mchange::untemplate-mill:0.1.2`
+import $ivy.`com.mchange::untemplate-mill:0.1.4`
 
 import untemplate.mill._
 import com.mchange.milldaemon.DaemonModule
 
 import scala.util.control.NonFatal
 
-object feedletter extends RootModule with DaemonModule with UntemplateModule {
-  def scalaVersion = "3.3.3"
+object `package` extends RootModule with DaemonModule with UntemplateModule {
+  def scalaVersion = "3.3.4"
 
   override def scalacOptions = T{ Seq("-deprecation") }
 
-  val pidFilePathFile = os.pwd / ".feedletter-pid-file-path"
+  val pidFilePathFile = mill.api.WorkspaceRoot.workspaceRoot / ".feedletter-pid-file-path"
 
   override def runDaemonPidFile = {
     if ( os.exists( pidFilePathFile ) )
@@ -28,11 +28,11 @@ object feedletter extends RootModule with DaemonModule with UntemplateModule {
           throw new Exception( s"Could not parse absolute path of desired PID file from contents of ${pidFilePathFile}. Please repair or remove this file.", t )
       }
     else
-      Some( os.pwd / "feedletter.pid" )
+      Some( mill.api.WorkspaceRoot.workspaceRoot / "feedletter.pid" )
   }
 
   def ivyDeps = Agg(
-    ivy"com.mchange::feedletter:0.0.11"
+    ivy"com.mchange::feedletter:0.0.16"
   )
 
   // we'll build an index!
@@ -58,7 +58,7 @@ object feedletter extends RootModule with DaemonModule with UntemplateModule {
   def overwriteLatestMillw() = T.command {
     import java.nio.file.attribute.PosixFilePermission._
     val target = mill.util.Util.download("https://raw.githubusercontent.com/lefou/millw/main/millw")
-    val millw = build.millSourcePath / "millw"
+    val millw = Task.workspace / "millw"
     os.copy.over(target.path, millw)
     os.perms.set(millw, os.perms(millw) + OWNER_EXECUTE + GROUP_EXECUTE + OTHERS_EXECUTE)
     target
