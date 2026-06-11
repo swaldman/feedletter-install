@@ -31,7 +31,7 @@ object `package` extends DaemonModule with UntemplateModule {
   }
 
   def mvnDeps = Seq(
-    mvn"com.mchange::feedletter:0.2.5-SNAPSHOT"
+    mvn"com.mchange::feedletter:0.2.5"
   )
 
   // we'll build an index!
