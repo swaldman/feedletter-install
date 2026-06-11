@@ -1,6 +1,6 @@
-//| mill-version: 1.0.0
+//| mill-version: 1.0.6
 //| mill-jvm-version: 21
-//| mvnDeps: ["com.lihaoyi::mill-contrib-buildinfo:$MILL_VERSION","com.mchange::mill-daemon:0.2.0-SNAPSHOT","com.mchange::untemplate-mill:0.2.0-SNAPSHOT"]
+//| mvnDeps: ["com.lihaoyi::mill-contrib-buildinfo:$MILL_VERSION","com.mchange::mill-daemon:0.2.0","com.mchange::untemplate-mill:0.2.0"]
 //+---------------------------------------------------------------------------------------------------------
 package build
 
@@ -13,7 +13,7 @@ import com.mchange.milldaemon.DaemonModule
 import scala.util.control.NonFatal
 
 object `package` extends DaemonModule with UntemplateModule {
-  def scalaVersion = "3.3.6"
+  def scalaVersion = "3.3.7"
 
   override def scalacOptions = Task { Seq("-deprecation") }
 
@@ -31,7 +31,7 @@ object `package` extends DaemonModule with UntemplateModule {
   }
 
   def mvnDeps = Seq(
-    mvn"com.mchange::feedletter:0.2.0-SNAPSHOT"
+    mvn"com.mchange::feedletter:0.2.5-SNAPSHOT"
   )
 
   // we'll build an index!
